@@ -10,7 +10,7 @@ export default function Avatar({ name }: Props) {
     const [firstName, lastName = ""] = name.split(" ");
     const firstInitial = firstName.substr(0, 1).toUpperCase();
     const lastInitial = lastName.substr(0, 1).toUpperCase();
-    return `${firstInitial} ${lastInitial}`.trim();
+    return `${firstInitial}${lastInitial}`.trim();
   }, [name]);
 
   return <AvatarWrapper>{initials}</AvatarWrapper>;
