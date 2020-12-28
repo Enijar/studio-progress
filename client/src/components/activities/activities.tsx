@@ -39,6 +39,7 @@ export default function Activities() {
     let timeout: NodeJS.Timeout;
     (async function update() {
       const res = await fetchLatestActivity();
+      if (res === null) return;
       setData(res.activities);
       setActivities(res.recentActivities);
       setRepositories(res.recentRepositories);

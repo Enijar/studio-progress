@@ -16,9 +16,6 @@ export async function fetchLatestActivity() {
     };
   } catch (err) {
     console.error(err);
-    return {
-      recentActivities: [],
-      recentRepositories: [],
-    };
+    return null;
   }
 }
