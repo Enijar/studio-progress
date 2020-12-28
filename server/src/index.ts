@@ -3,6 +3,7 @@ import { Application } from "express";
 import * as cors from "cors";
 import { PORT } from "./services/config";
 import database from "./services/database";
+import jobs from "./services/jobs";
 import activityLatest from "./actions/activity/latest";
 import setup from "./middleware/setup";
 
@@ -12,6 +13,8 @@ const app: Application = express();
   try {
     const connection = await database();
     await connection.close();
+
+    jobs();
 
     app.use(cors());
 

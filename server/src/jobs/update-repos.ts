@@ -1,10 +1,11 @@
 import bitbucket from "../services/bitbucket";
 import database, { Repository } from "../services/database";
 
-(async () => {
+export default async function updateRepos() {
   try {
-    const connection = await database();
+    console.log("Start processing update-repos...");
 
+    const connection = await database();
     const username = "FinerVision";
     const url = `https://api.bitbucket.org/2.0/teams/${username}/repositories`;
     const repositories = await bitbucket.get(url);
@@ -24,9 +25,9 @@ import database, { Repository } from "../services/database";
       await connection.manager.save(repository);
     }
 
-    process.exit(0);
+    console.log("Finished processing update-repos");
   } catch (err) {
     console.error(err);
-    process.exit(1);
+    console.error("Error processing update-repos");
   }
-})();
+}

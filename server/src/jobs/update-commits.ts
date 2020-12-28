@@ -1,10 +1,12 @@
 import bitbucket from "../services/bitbucket";
 import database, { Repository, Author, Commit } from "../services/database";
 
-(async () => {
+export default async function updateCommits() {
   try {
-    const username = "FinerVision";
+    console.log("Start processing update-commits...");
+
     const connection = await database();
+    const username = "FinerVision";
     const repositories = await connection
       .getRepository(Repository)
       .createQueryBuilder("repository")
@@ -50,10 +52,9 @@ import database, { Repository, Author, Commit } from "../services/database";
         await connection.manager.save(commit);
       }
     }
-
-    process.exit(0);
+    console.log("Finished processing update-commits");
   } catch (err) {
     console.error(err);
-    process.exit(1);
+    console.error("Error processing update-commits");
   }
-})();
+}
