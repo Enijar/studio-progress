@@ -10,7 +10,8 @@ export default function jobs() {
     async () => {
       if (running) return;
       running = true;
-      console.log("Starting background jobs...");
+      const dateTime = new Date().toLocaleString();
+      console.log(`[${dateTime}] Starting background jobs...`);
       await updateRepos();
       await updateCommits();
       console.log("Background jobs finished");
