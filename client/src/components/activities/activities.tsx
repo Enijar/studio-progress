@@ -132,7 +132,10 @@ export default function Activities() {
         })}
       </ActivityWrapper>
 
-      <ActivityWrapper>{<Line data={lineChartData} />}</ActivityWrapper>
+      <ActivityWrapper>
+        <h1>Commits Per Day</h1>
+        <Line data={lineChartData} />
+      </ActivityWrapper>
     </ActivitiesWrapper>
   );
 }
