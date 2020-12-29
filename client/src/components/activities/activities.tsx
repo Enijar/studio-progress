@@ -50,20 +50,36 @@ export default function Activities() {
 
   React.useEffect(() => {
     type StringNumber = {
-      [key: string]: number;
+      [key: number]: number;
     };
-    const labels: string[] = [];
+    type Label = {
+      date: number;
+      value: string;
+    };
+    const labels: Label[] = [];
+    function getTime(date: string): number {
+      const d = new Date(date.split("T")[0]);
+      return d.getTime();
+    }
+    data.forEach((item) => {
+      item.commits.forEach((commit) => {
+        const date = getTime(commit.createdAt);
+        const day = format(new Date(commit.createdAt), "MMM do");
+        const index = labels.findIndex((item) => item.date === date);
+        if (index === -1) {
+          labels.push({ date, value: day });
+        }
+      });
+    });
+    labels.sort((a, b) => a.date - b.date);
     const datasets: ChartDataSet[] = data.map((item) => {
       const commitsPerDay: StringNumber = {};
       item.commits.forEach((commit) => {
-        const day = format(new Date(commit.createdAt), "MMM do");
-        if (!labels.includes(day)) {
-          labels.push(day);
+        const date = getTime(commit.createdAt);
+        if (!commitsPerDay.hasOwnProperty(date)) {
+          commitsPerDay[date] = 0;
         }
-        if (!commitsPerDay.hasOwnProperty(day)) {
-          commitsPerDay[day] = 0;
-        }
-        commitsPerDay[day]++;
+        commitsPerDay[date]++;
       });
       const color = colorFromValue(item.uuid);
       return {
@@ -71,10 +87,13 @@ export default function Activities() {
         fill: false,
         backgroundColor: color,
         borderColor: color,
-        data: Object.values(commitsPerDay),
+        data: labels.map((item) => commitsPerDay[item.date] ?? 0),
       };
     });
-    setLineChartData({ labels, datasets });
+    setLineChartData({
+      labels: labels.map((item) => item.value),
+      datasets,
+    });
   }, [data]);
 
   return (
